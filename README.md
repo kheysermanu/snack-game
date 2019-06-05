@@ -35,5 +35,5 @@ npm run watch (dev mode with hot loading)
 
 # Config
 
-* node v8.10.0
-* npm 6.9.0
+* node v10.16.0
+* npm v6.9.0
