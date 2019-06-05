@@ -17,3 +17,13 @@ Add basics rules of the snake game
 
 **Third step**
 Introduce Axios to play with an nodejs server or spring-boot server with Jhisper or other
+
+# Run
+```
+npm install
+npm run watch (dev mode with hot loading)
+```
+
+# Config
+* node v8.10.0
+* npm 6.9.0
