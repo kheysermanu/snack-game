@@ -5,7 +5,7 @@ With integration of webpack for production build and hot loading during modifyin
 
 The purpose of this project is to look about these web technologies and try to manipulate them in application of the best practices
 
-**First step**
+**First step tag v1.0**
 
 Init project with React, TSX, material-ui/(core,icons,styles) and wepack
 For now a simple green square is the snake.
