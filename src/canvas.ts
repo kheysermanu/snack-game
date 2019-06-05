@@ -37,8 +37,8 @@ export const checkNewPosition = (newX: number, newY: number): ICheckPosition => 
 
     const x = Math.abs(newX);
     const y = Math.abs(newY);
-    const currentStep = x < PANE.width - PANE.originX && x > PANE.originX &&
-        y < PANE.height - PANE.originY && y > PANE.originY;
+    const currentStep = x < PANE.width - PANE.originX && x >= PANE.originX &&
+        y < PANE.height - PANE.originY && y >= PANE.originY;
     const nextStep = x + DIM_SQUARE < PANE.width - PANE.originX && x > PANE.originX &&
         y + DIM_SQUARE < PANE.height - PANE.originY && y > PANE.originY;
     console.log('check new position => x:' + newX + ' y:' + newY + ' => ' +
