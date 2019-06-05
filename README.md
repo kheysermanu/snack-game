@@ -6,24 +6,29 @@ With integration of webpack for production build and hot loading during modifyin
 The purpose of this project is to look about these web technologies and try to manipulate them in application of the best practices
 
 **First step**
+
 Init project with React, TSX, material-ui/(core,icons,styles) and wepack
 For now a simple green square is the snake.
 The snake move in the canvas pane with black border witch change to red if the square touch the border.
 You can move it with the directional keys of the keyboard
 
 **Second step**
+
 Introduce i18n
 Add basics rules of the snake game
 
 **Third step**
+
 Introduce Axios to play with an nodejs server or spring-boot server with Jhisper or other
 
 # Run
+
 ```
 npm install
 npm run watch (dev mode with hot loading)
 ```
 
 # Config
+
 * node v8.10.0
 * npm 6.9.0
