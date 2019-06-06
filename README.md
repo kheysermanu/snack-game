@@ -13,14 +13,17 @@ For now a simple green square is the snake.<br>
 The snake move in the canvas pane with black border witch change to red if the square touch the border.<br>
 You can move it with the directional keys of the keyboard.<br>
 
-**Second step**
+**Second step tag v1.1**
 
 Introduce i18n.<br>
+Add routes.<br>
 Add basics rules of the snake game.<br>
 
 **Third step**
 
-Introduce Axios to play with an nodejs server or spring-boot server with Jhisper or other.
+Introduce Axios.<br>
+Introduce Redux.<br>
+Play with an nodejs server or spring-boot server with Jhisper or other.<br>
 
 **Last step**
 
