@@ -13,11 +13,16 @@ interface ISnackPropsPane {
 
 const styles = createStyles({
         divCanvas: {
+                flex: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyItems: 'center'
         },
+        btn: {
+                flex: 'auto',
+                width: '100%'
+        }
 });
 const initState = () => {
         return {
@@ -109,6 +114,19 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                 this.startGame();
         }
 
+        getButton = (classes: any) => {
+                return (
+                        <Button
+                                className={classes.btn}
+                                onClick={this.onReplay}
+                                disabled={this.state.game}
+                                color={'primary'}
+                        >
+                                <Replay color={'primary'} />
+                        </Button>
+                );
+        }
+
         render() {
                 const { classes } = this.props;
                 return (
@@ -126,7 +144,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                                 >
                                         Canvas is not supported.
                                 </canvas>
-                                <Button onClick={this.onReplay} disabled={this.state.game}><Replay /></Button>
+                                {!this.state.game && this.getButton(classes)}
                         </div>
                 );
         }

@@ -4,6 +4,6 @@ import AppComponent from './app';
 import 'typeface-roboto';
 
 ReactDOM.render(
-    <AppComponent compiler='TSX' framework='React+Canvas' />,
+    <AppComponent framework='React - HTML Canvas' />,
     document.getElementById('root')
 );

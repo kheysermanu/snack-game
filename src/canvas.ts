@@ -1,7 +1,7 @@
-export const DIM_SQUARE = 40;
-export const DIM_STEP_FORWARD = 40;
+export const DIM_SQUARE = 20;
+export const DIM_STEP_FORWARD = 20;
 export const DIM_ROOT = 400;
-export const DELAY = 1000;
+export const DELAY = 400;
 export enum DIRECTION { LEFT = 'left', UP = 'up', RIGHT = 'right', DOWN = 'down' };
 export interface IPane {
     originX: number;
@@ -65,3 +65,13 @@ export const checkChangeDirection = (currentDirection: DIRECTION, newDirection: 
     }
     return change && !isGameOver;
 }
+
+
+export const drawSnakeFood = (ctx: any, toX: number, toY: number): void => {
+    if (ctx) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(toX, toY, DIM_SQUARE, DIM_SQUARE);
+    } else {
+        console.log('context canvas introuvable');
+    }
+};
