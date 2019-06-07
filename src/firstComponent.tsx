@@ -101,7 +101,6 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
 
         onKeyEvent = (key: string, e: any) => {
-                // Tools.findIndex(Tools.toArray(Canvas.DIRECTION), (item: string) => item === key)
                 if (Canvas.checkChangeDirection(this.state.direction, key, !this.state.game)) {
                         this.setState({ direction: key });
                 } else {

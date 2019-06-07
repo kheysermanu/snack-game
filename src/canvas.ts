@@ -66,7 +66,6 @@ export const checkChangeDirection = (currentDirection: DIRECTION, newDirection: 
     return change && !isGameOver;
 }
 
-
 export const drawSnakeFood = (ctx: any, toX: number, toY: number): void => {
     if (ctx) {
         ctx.fillStyle = 'white';

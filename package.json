@@ -11,6 +11,7 @@
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "lint": "tslint --project tsconfig.json -e 'node_modules/**'",
     "watch": "webpack -p && webpack-dev-server -d --hot --config webpack.config.js --watch"
   },
   "eslintConfig": {
