@@ -18,6 +18,11 @@ export interface ICheckPosition {
     currentStep: boolean;
     nextStep: boolean;
 }
+export interface IFoodSnake {
+    x: number;
+    y: number;
+    eated: boolean;
+}
 export const PANE: IPane = { originX: 0, originY: 0, height: DIM_ROOT, width: DIM_ROOT };
 export const ORI_STATE: ICanvasState = {
     x: PANE.width / 2 - DIM_SQUARE,
@@ -64,13 +69,34 @@ export const checkChangeDirection = (currentDirection: DIRECTION, newDirection: 
             change = true;
     }
     return change && !isGameOver;
-}
-
-export const drawSnakeFood = (ctx: any, toX: number, toY: number): void => {
+};
+const getRndInteger = (min: number, max: number): number => {
+    let res = -1;
+    while (res % DIM_SQUARE !== 0) {
+        res = Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    return res;
+};
+export const genFoodSnake = (): IFoodSnake => {
+    return {
+        x: getRndInteger(PANE.originX + DIM_SQUARE, PANE.width - DIM_SQUARE),
+        y: getRndInteger(PANE.originY + DIM_SQUARE, PANE.height - DIM_SQUARE),
+        eated: false
+    };
+};
+export const drawSnakeFood = (ctx: any, foodObj: IFoodSnake): void => {
+    console.log('food at position: (' + foodObj.x + ',' + foodObj.y + ')');
     if (ctx) {
         ctx.fillStyle = 'white';
-        ctx.fillRect(toX, toY, DIM_SQUARE, DIM_SQUARE);
+        ctx.fillRect(foodObj.x, foodObj.y, DIM_SQUARE, DIM_SQUARE);
     } else {
         console.log('context canvas introuvable');
+    }
+};
+export const drawText = (ctx: any, message: string, color: string) => {
+    if (ctx) {
+        ctx.font = '48px serif';
+        ctx.fillStyle = color;
+        ctx.fillText(message, 10, 50);
     }
 };

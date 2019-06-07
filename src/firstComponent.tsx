@@ -29,7 +29,8 @@ const initState = () => {
                 x: Canvas.ORI_STATE.x,
                 y: Canvas.ORI_STATE.y,
                 direction: Canvas.ORI_STATE.direction,
-                game: true
+                game: true,
+                food: Canvas.genFoodSnake()
         }
 };
 export class FirstComponent extends React.Component<ISnackPropsPane> {
@@ -40,8 +41,11 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         componentDidMount() {
                 this.startGame();
         }
-        componentDidUpdate() {
+        componentDidUpdate(prevState: any) {
                 this.updateSnack();
+                if (this.state.game && (prevState.food === undefined || this.state.food.eated !== prevState.food.eated)) {
+                        this.showFood();
+                }
         }
 
         componentWillUnmount() {
@@ -60,7 +64,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         looseGame = () => {
                 clearTimeout(this.intervalID);
                 this.intervalID = null;
-                console.log('You loose');
+                Canvas.drawText(this.myCanvas.getContext('2d'), 'You loose', 'red');
         }
 
         progress = () => {
@@ -90,6 +94,9 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                 if (check.currentStep) {
                         this.setState({ x: newX, y: newY, game: check.nextStep });
                 }
+        }
+        showFood = () => {
+                Canvas.drawSnakeFood(this.myCanvas.getContext('2d'), this.state.food);
         }
         updateSnack = () => {
                 if (this.myCanvas) {
