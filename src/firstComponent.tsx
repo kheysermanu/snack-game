@@ -1,17 +1,19 @@
 import React from 'react';
-import './mycanvas.scss';
 import * as Canvas from './canvas';
 import * as Tools from 'lodash';
 import Button from '@material-ui/core/Button';
 import Replay from '@material-ui/icons/Replay';
+import Star from '@material-ui/icons/Star';
 import { withStyles, createStyles } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
+import { Theme } from '@material-ui/core';
 const KeyboardEventHandler = require('react-keyboard-event-handler/lib/react-keyboard-event-handler');
 
 interface ISnackPropsPane {
         classes?: any;
 }
 
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
         divCanvas: {
                 flex: 'auto',
                 display: 'flex',
@@ -22,6 +24,19 @@ const styles = createStyles({
         btn: {
                 flex: 'auto',
                 width: '100%'
+        },
+        canvas: {
+                border: 'solid 1px white'
+        },
+        loose: {
+                border: 'solid 2px red'
+        },
+        typo: {
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                color: theme.palette.primary.light,
+                flexDirection: 'row-reverse'
         }
 });
 export class FirstComponent extends React.Component<ISnackPropsPane> {
@@ -83,7 +98,21 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                 }
                 const check = Canvas.checkNewPosition(newX, newY);
                 if (check.currentStep) {
-                        this.setState({ snake: { head: { x: newX, y: newY } }, play: check.nextStep });
+                        const isFoodEated = Canvas.isFoodEated(this.state.food, this.state.snake);
+                        const food: Canvas.IFoodSnake = isFoodEated ? Canvas.genFoodSnake() : this.state.food;
+                        const score = isFoodEated ?
+                                this.state.score + 1 : this.state.score;
+                        this.setState({
+                                snake: {
+                                        head: {
+                                                x: newX,
+                                                y: newY
+                                        }
+                                },
+                                play: check.nextStep,
+                                score: score,
+                                food: food
+                        });
                 }
         }
         showFood = () => {
@@ -132,8 +161,11 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                                         handleKeys={Tools.toArray(Canvas.DIRECTION)}
                                         onKeyEvent={this.onKeyEvent}
                                 />
+                                <Typography className={classes.typo} component='h4' gutterBottom={true}>
+                                        <Star /> {this.state.score}
+                                </Typography>
                                 <canvas
-                                        className={this.state.play ? 'canvas' : 'loose'}
+                                        className={this.state.play ? classes.canvas : classes.loose}
                                         id='canvasid'
                                         ref={canvas => this.myCanvas = canvas}
                                         width={Canvas.PANE.width}

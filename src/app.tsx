@@ -38,7 +38,7 @@ class AppComponent extends React.Component<IAppComponentProps> {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Typography className={classes.typo} component='h4' gutterBottom={true}>
+        <Typography className={classes.typo} component='h3' gutterBottom={true}>
           Hello, Welcome to my first Snake game page from {this.props.framework}
         </Typography>
         <FirstComponent />

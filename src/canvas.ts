@@ -22,7 +22,8 @@ export interface IGameState {
     snake: ISnake;
     direction: DIRECTION;
     play: boolean,
-    food: IFoodSnake
+    food: IFoodSnake,
+    score: number
 }
 export interface ICheckPosition {
     currentStep: boolean;
@@ -43,8 +44,8 @@ const getRndInteger = (min: number, max: number): number => {
 };
 export const genFoodSnake = (): IFoodSnake => {
     return {
-        x: getRndInteger(PANE.originX + DIM_SQUARE, PANE.width - DIM_SQUARE),
-        y: getRndInteger(PANE.originY + DIM_SQUARE, PANE.height - DIM_SQUARE),
+        x: getRndInteger(PANE.originX + DIM_SQUARE, PANE.width - DIM_SQUARE * 2),
+        y: getRndInteger(PANE.originY + DIM_SQUARE, PANE.height - DIM_SQUARE * 2),
         eated: false
     };
 };
@@ -52,7 +53,8 @@ export const ORI_STATE: IGameState = {
     snake: { head: { x: PANE.width / 2 - DIM_SQUARE, y: PANE.height / 2 - DIM_SQUARE } },
     direction: DIRECTION.RIGHT,
     play: true,
-    food: genFoodSnake()
+    food: genFoodSnake(),
+    score: 0
 };
 export const drawSquare = (ctx: any, toX: number, toY: number): void => {
     if (ctx) {
