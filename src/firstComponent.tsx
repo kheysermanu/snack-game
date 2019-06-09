@@ -24,17 +24,8 @@ const styles = createStyles({
                 width: '100%'
         }
 });
-const initState = () => {
-        return {
-                x: Canvas.ORI_STATE.x,
-                y: Canvas.ORI_STATE.y,
-                direction: Canvas.ORI_STATE.direction,
-                game: true,
-                food: Canvas.genFoodSnake()
-        }
-};
 export class FirstComponent extends React.Component<ISnackPropsPane> {
-        state = initState();
+        state = Canvas.ORI_STATE;
         myCanvas: any;
         intervalID: any = null;
         progressBinded: any;
@@ -43,7 +34,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
         componentDidUpdate(prevState: any) {
                 this.updateSnack();
-                if (this.state.game && (prevState.food === undefined || this.state.food.eated !== prevState.food.eated)) {
+                if (this.state.play && (prevState.food === undefined || this.state.food.eated !== prevState.food.eated)) {
                         this.showFood();
                 }
         }
@@ -68,8 +59,8 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
 
         progress = () => {
-                let newX = this.state.x;
-                let newY = this.state.y;
+                let newX = this.state.snake.head.x;
+                let newY = this.state.snake.head.y;
                 switch (this.state.direction) {
                         case Canvas.DIRECTION.RIGHT:
                                 // on avance sur X
@@ -92,7 +83,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                 }
                 const check = Canvas.checkNewPosition(newX, newY);
                 if (check.currentStep) {
-                        this.setState({ x: newX, y: newY, game: check.nextStep });
+                        this.setState({ snake: { head: { x: newX, y: newY } }, play: check.nextStep });
                 }
         }
         showFood = () => {
@@ -100,15 +91,15 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
         updateSnack = () => {
                 if (this.myCanvas) {
-                        Canvas.drawSquare(this.myCanvas.getContext('2d'), this.state.x, this.state.y);
+                        Canvas.drawSnake(this.myCanvas.getContext('2d'), this.state.snake);
                 }
-                if (!this.state.game) {
+                if (!this.state.play) {
                         this.looseGame();
                 }
         }
 
         onKeyEvent = (key: string, e: any) => {
-                if (Canvas.checkChangeDirection(this.state.direction, key, !this.state.game)) {
+                if (Canvas.checkChangeDirection(this.state.direction, key, !this.state.play)) {
                         this.setState({ direction: key });
                 } else {
                         console.log('on ne change pas de direction');
@@ -116,7 +107,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
 
         onReplay = () => {
-                this.setState(initState());
+                this.setState(Canvas.ORI_STATE);
                 this.startGame();
         }
 
@@ -125,7 +116,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                         <Button
                                 className={classes.btn}
                                 onClick={this.onReplay}
-                                disabled={this.state.game}
+                                disabled={this.state.play}
                                 color={'primary'}
                         >
                                 <Replay color={'primary'} />
@@ -142,7 +133,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                                         onKeyEvent={this.onKeyEvent}
                                 />
                                 <canvas
-                                        className={this.state.game ? 'canvas' : 'loose'}
+                                        className={this.state.play ? 'canvas' : 'loose'}
                                         id='canvasid'
                                         ref={canvas => this.myCanvas = canvas}
                                         width={Canvas.PANE.width}
@@ -150,7 +141,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                                 >
                                         Canvas is not supported.
                                 </canvas>
-                                {!this.state.game && this.getButton(classes)}
+                                {!this.state.play && this.getButton(classes)}
                         </div>
                 );
         }

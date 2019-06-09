@@ -9,25 +9,50 @@ export interface IPane {
     height: number;
     width: number;
 }
-export interface ICanvasState {
+export interface IPosition {
     x: number;
     y: number;
+}
+export interface ISnakeHead extends IPosition { }
+export interface ISnake {
+    head: ISnakeHead;
+    body?: ISnakeHead[];
+}
+export interface IGameState {
+    snake: ISnake;
     direction: DIRECTION;
+    play: boolean,
+    food: IFoodSnake
 }
 export interface ICheckPosition {
     currentStep: boolean;
     nextStep: boolean;
 }
-export interface IFoodSnake {
+export interface IFoodSnake extends IPosition {
     x: number;
     y: number;
     eated: boolean;
 }
 export const PANE: IPane = { originX: 0, originY: 0, height: DIM_ROOT, width: DIM_ROOT };
-export const ORI_STATE: ICanvasState = {
-    x: PANE.width / 2 - DIM_SQUARE,
-    y: PANE.height / 2 - DIM_SQUARE,
-    direction: DIRECTION.RIGHT
+const getRndInteger = (min: number, max: number): number => {
+    let res = -1;
+    while (res % DIM_SQUARE !== 0) {
+        res = Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    return res;
+};
+export const genFoodSnake = (): IFoodSnake => {
+    return {
+        x: getRndInteger(PANE.originX + DIM_SQUARE, PANE.width - DIM_SQUARE),
+        y: getRndInteger(PANE.originY + DIM_SQUARE, PANE.height - DIM_SQUARE),
+        eated: false
+    };
+};
+export const ORI_STATE: IGameState = {
+    snake: { head: { x: PANE.width / 2 - DIM_SQUARE, y: PANE.height / 2 - DIM_SQUARE } },
+    direction: DIRECTION.RIGHT,
+    play: true,
+    food: genFoodSnake()
 };
 export const drawSquare = (ctx: any, toX: number, toY: number): void => {
     if (ctx) {
@@ -38,6 +63,9 @@ export const drawSquare = (ctx: any, toX: number, toY: number): void => {
         console.log('context canvas introuvable');
     }
 };
+export const drawSnake = (ctx: any, snake: ISnake) => {
+    drawSquare(ctx, snake.head.x, snake.head.y);
+}
 export const checkNewPosition = (newX: number, newY: number): ICheckPosition => {
 
     const x = Math.abs(newX);
@@ -70,20 +98,6 @@ export const checkChangeDirection = (currentDirection: DIRECTION, newDirection: 
     }
     return change && !isGameOver;
 };
-const getRndInteger = (min: number, max: number): number => {
-    let res = -1;
-    while (res % DIM_SQUARE !== 0) {
-        res = Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    return res;
-};
-export const genFoodSnake = (): IFoodSnake => {
-    return {
-        x: getRndInteger(PANE.originX + DIM_SQUARE, PANE.width - DIM_SQUARE),
-        y: getRndInteger(PANE.originY + DIM_SQUARE, PANE.height - DIM_SQUARE),
-        eated: false
-    };
-};
 export const drawSnakeFood = (ctx: any, foodObj: IFoodSnake): void => {
     console.log('food at position: (' + foodObj.x + ',' + foodObj.y + ')');
     if (ctx) {
@@ -93,6 +107,9 @@ export const drawSnakeFood = (ctx: any, foodObj: IFoodSnake): void => {
         console.log('context canvas introuvable');
     }
 };
+export const isFoodEated = (foodObj: IFoodSnake, snake: ISnake) => {
+    return foodObj.x === snake.head.x && foodObj.y === snake.head.y;
+}
 export const drawText = (ctx: any, message: string, color: string) => {
     if (ctx) {
         ctx.font = '48px serif';
