@@ -40,7 +40,7 @@ const styles = (theme: Theme) => createStyles({
         }
 });
 export class FirstComponent extends React.Component<ISnackPropsPane> {
-        state = Canvas.ORI_STATE;
+        state = Canvas.ORI_STATE();
         myCanvas: any;
         intervalID: any = null;
         progressBinded: any;
@@ -74,8 +74,8 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
 
         progress = () => {
-                let newX = this.state.snake.head.x;
-                let newY = this.state.snake.head.y;
+                let newX = this.state.snake.body[0].x;
+                let newY = this.state.snake.body[0].y;
                 switch (this.state.direction) {
                         case Canvas.DIRECTION.RIGHT:
                                 // on avance sur X
@@ -100,15 +100,13 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
                 if (check.currentStep) {
                         const isFoodEated = Canvas.isFoodEated(this.state.food, this.state.snake);
                         const food: Canvas.IFoodSnake = isFoodEated ? Canvas.genFoodSnake() : this.state.food;
+                        const snake: Canvas.ISnake = this.state.snake;
+                        snake.body[0] = { x: newX, y: newY };
+                        Canvas.addBodyToSnake(snake, this.state.direction);
                         const score = isFoodEated ?
                                 this.state.score + 1 : this.state.score;
                         this.setState({
-                                snake: {
-                                        head: {
-                                                x: newX,
-                                                y: newY
-                                        }
-                                },
+                                snake: snake,
                                 play: check.nextStep,
                                 score: score,
                                 food: food
@@ -136,7 +134,7 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
 
         onReplay = () => {
-                this.setState(Canvas.ORI_STATE);
+                this.setState(Canvas.ORI_STATE());
                 this.startGame();
         }
 

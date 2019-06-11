@@ -13,10 +13,9 @@ export interface IPosition {
     x: number;
     y: number;
 }
-export interface ISnakeHead extends IPosition { }
+export interface ISnakeBody extends IPosition { }
 export interface ISnake {
-    head: ISnakeHead;
-    body?: ISnakeHead[];
+    body: ISnakeBody[];
 }
 export interface IGameState {
     snake: ISnake;
@@ -49,13 +48,13 @@ export const genFoodSnake = (): IFoodSnake => {
         eated: false
     };
 };
-export const ORI_STATE: IGameState = {
-    snake: { head: { x: PANE.width / 2 - DIM_SQUARE, y: PANE.height / 2 - DIM_SQUARE } },
+export const ORI_STATE = (): IGameState => ({
+    snake: { body: [{ x: PANE.width / 2 - DIM_SQUARE, y: PANE.height / 2 - DIM_SQUARE }] },
     direction: DIRECTION.RIGHT,
     play: true,
     food: genFoodSnake(),
     score: 0
-};
+});
 export const drawSquare = (ctx: any, toX: number, toY: number): void => {
     if (ctx) {
         ctx.clearRect(PANE.originX, PANE.originY, PANE.height, PANE.width);
@@ -66,7 +65,11 @@ export const drawSquare = (ctx: any, toX: number, toY: number): void => {
     }
 };
 export const drawSnake = (ctx: any, snake: ISnake) => {
-    drawSquare(ctx, snake.head.x, snake.head.y);
+    if (snake.body) {
+        snake.body.forEach(value => {
+            drawSquare(ctx, value.x, value.y);
+        });
+    }
 }
 export const checkNewPosition = (newX: number, newY: number): ICheckPosition => {
 
@@ -110,8 +113,8 @@ export const drawSnakeFood = (ctx: any, foodObj: IFoodSnake): void => {
     }
 };
 export const isFoodEated = (foodObj: IFoodSnake, snake: ISnake) => {
-    return foodObj.x === snake.head.x && foodObj.y === snake.head.y;
-}
+    return foodObj.x === snake.body[0].x && foodObj.y === snake.body[0].y;
+};
 export const drawText = (ctx: any, message: string, color: string) => {
     if (ctx) {
         ctx.font = '48px serif';
@@ -119,3 +122,34 @@ export const drawText = (ctx: any, message: string, color: string) => {
         ctx.fillText(message, 10, 50);
     }
 };
+export const addBodyToSnake = (snake: ISnake, direction: DIRECTION) => {
+    switch (direction) {
+        case DIRECTION.DOWN:
+            snake.body.push({
+                x: snake.body[snake.body.length - 1].x,
+                y: snake.body[snake.body.length - 1].y - DIM_SQUARE
+            });
+            break;
+        case DIRECTION.LEFT:
+            snake.body.push({
+                x: snake.body[snake.body.length - 1].x + DIM_SQUARE,
+                y: snake.body[snake.body.length - 1].y
+            });
+            break;
+        case DIRECTION.RIGHT:
+            snake.body.push({
+                x: snake.body[snake.body.length - 1].x - DIM_SQUARE,
+                y: snake.body[snake.body.length - 1].y
+            });
+            break;
+        case DIRECTION.UP:
+            snake.body.push({
+                x: snake.body[snake.body.length - 1].x,
+                y: snake.body[snake.body.length - 1].y + DIM_SQUARE
+            });
+            break;
+        default:
+
+    }
+
+}
