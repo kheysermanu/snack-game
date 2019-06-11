@@ -65,7 +65,6 @@ export const clearPanel = (ctx: any) => {
 export const drawSquare = (ctx: any, toX: number, toY: number, color: string): void => {
     if (ctx) {
         ctx.fillStyle = color;
-        console.log('fillRect ' + toX + ' ' + toY);
         ctx.fillRect(toX, toY, DIM_SQUARE, DIM_SQUARE);
     } else {
         console.log('context canvas introuvable');
