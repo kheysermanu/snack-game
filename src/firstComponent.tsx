@@ -74,37 +74,18 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
 
         progress = () => {
-                let newX = this.state.snake.body[0].x;
-                let newY = this.state.snake.body[0].y;
-                switch (this.state.direction) {
-                        case Canvas.DIRECTION.RIGHT:
-                                // on avance sur X
-                                newX = newX + Canvas.DIM_STEP_FORWARD;
-                                break;
-                        case Canvas.DIRECTION.DOWN:
-                                // on avance sur Y
-                                newY = newY + Canvas.DIM_STEP_FORWARD;
-                                break;
-                        case Canvas.DIRECTION.LEFT:
-                                // on avance sur X
-                                newX = newX - Canvas.DIM_STEP_FORWARD;
-                                break;
-                        case Canvas.DIRECTION.UP:
-                                // on avance sur Y
-                                newY = newY - Canvas.DIM_STEP_FORWARD;
-                                break;
-                        default:
-                                console.log('aucune direction definie');
-                }
-                const check = Canvas.checkNewPosition(newX, newY);
+                const { x, y } = Canvas.progressPosition(this.state.snake.body[0], this.state.direction);
+                const check = Canvas.checkNewPosition(x, y);
                 if (check.currentStep) {
                         const isFoodEated = Canvas.isFoodEated(this.state.food, this.state.snake);
                         const food: Canvas.IFoodSnake = isFoodEated ? Canvas.genFoodSnake() : this.state.food;
                         const snake: Canvas.ISnake = this.state.snake;
-                        snake.body[0] = { x: newX, y: newY };
-                        Canvas.addBodyToSnake(snake, this.state.direction);
                         const score = isFoodEated ?
                                 this.state.score + 1 : this.state.score;
+                        Canvas.moveSnake(snake, x, y);
+                        if (isFoodEated) {
+                                Canvas.addBodyToSnake(snake, this.state.direction);
+                        }
                         this.setState({
                                 snake: snake,
                                 play: check.nextStep,

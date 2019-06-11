@@ -2,6 +2,8 @@ export const DIM_SQUARE = 20;
 export const DIM_STEP_FORWARD = 20;
 export const DIM_ROOT = 400;
 export const DELAY = 400;
+export const SNAKE_COLOR = 'green';
+export const FOOD_COLOR = 'white';
 export enum DIRECTION { LEFT = 'left', UP = 'up', RIGHT = 'right', DOWN = 'down' };
 export interface IPane {
     originX: number;
@@ -55,10 +57,15 @@ export const ORI_STATE = (): IGameState => ({
     food: genFoodSnake(),
     score: 0
 });
-export const drawSquare = (ctx: any, toX: number, toY: number): void => {
+export const clearPanel = (ctx: any) => {
     if (ctx) {
         ctx.clearRect(PANE.originX, PANE.originY, PANE.height, PANE.width);
-        ctx.fillStyle = 'green';
+    }
+}
+export const drawSquare = (ctx: any, toX: number, toY: number, color: string): void => {
+    if (ctx) {
+        ctx.fillStyle = color;
+        console.log('fillRect ' + toX + ' ' + toY);
         ctx.fillRect(toX, toY, DIM_SQUARE, DIM_SQUARE);
     } else {
         console.log('context canvas introuvable');
@@ -66,8 +73,9 @@ export const drawSquare = (ctx: any, toX: number, toY: number): void => {
 };
 export const drawSnake = (ctx: any, snake: ISnake) => {
     if (snake.body) {
+        clearPanel(ctx);
         snake.body.forEach(value => {
-            drawSquare(ctx, value.x, value.y);
+            drawSquare(ctx, value.x, value.y, SNAKE_COLOR);
         });
     }
 }
@@ -105,12 +113,7 @@ export const checkChangeDirection = (currentDirection: DIRECTION, newDirection: 
 };
 export const drawSnakeFood = (ctx: any, foodObj: IFoodSnake): void => {
     console.log('food at position: (' + foodObj.x + ',' + foodObj.y + ')');
-    if (ctx) {
-        ctx.fillStyle = 'white';
-        ctx.fillRect(foodObj.x, foodObj.y, DIM_SQUARE, DIM_SQUARE);
-    } else {
-        console.log('context canvas introuvable');
-    }
+    drawSquare(ctx, foodObj.x, foodObj.y, FOOD_COLOR);
 };
 export const isFoodEated = (foodObj: IFoodSnake, snake: ISnake) => {
     return foodObj.x === snake.body[0].x && foodObj.y === snake.body[0].y;
@@ -121,6 +124,16 @@ export const drawText = (ctx: any, message: string, color: string) => {
         ctx.fillStyle = color;
         ctx.fillText(message, 10, 50);
     }
+};
+export const moveSnake = (snake: ISnake, newX: number, newY: number) => {
+    let pos = snake.body.length - 1;
+    while (pos - 1 > -1) {
+        snake.body[pos].x = snake.body[pos - 1].x;
+        snake.body[pos].y = snake.body[pos - 1].y;
+        pos = pos - 1;
+    }
+    snake.body[0] = { x: newX, y: newY };
+    console.log(snake.body);
 };
 export const addBodyToSnake = (snake: ISnake, direction: DIRECTION) => {
     switch (direction) {
@@ -152,4 +165,28 @@ export const addBodyToSnake = (snake: ISnake, direction: DIRECTION) => {
 
     }
 
-}
+};
+export const progressPosition = (pos: IPosition, direction: DIRECTION): IPosition => {
+    let newPos: IPosition = { x: pos.x, y: pos.y };
+    switch (direction) {
+        case DIRECTION.RIGHT:
+            // on avance sur X
+            newPos.x = newPos.x + DIM_STEP_FORWARD;
+            break;
+        case DIRECTION.DOWN:
+            // on avance sur Y
+            newPos.y = newPos.y + DIM_STEP_FORWARD;
+            break;
+        case DIRECTION.LEFT:
+            // on avance sur X
+            newPos.x = newPos.x - DIM_STEP_FORWARD;
+            break;
+        case DIRECTION.UP:
+            // on avance sur Y
+            newPos.y = newPos.y - DIM_STEP_FORWARD;
+            break;
+        default:
+            console.log('aucune direction definie');
+    }
+    return newPos;
+};
