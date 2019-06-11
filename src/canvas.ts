@@ -87,8 +87,6 @@ export const checkNewPosition = (newX: number, newY: number): ICheckPosition => 
         y < PANE.height - PANE.originY && y >= PANE.originY;
     const nextStep = x + DIM_SQUARE < PANE.width - PANE.originX && x > PANE.originX &&
         y + DIM_SQUARE < PANE.height - PANE.originY && y > PANE.originY;
-    console.log('check new position => x:' + newX + ' y:' + newY + ' => ' +
-        currentStep + ' ' + nextStep);
     return { currentStep, nextStep };
 };
 export const checkChangeDirection = (currentDirection: DIRECTION, newDirection: string, isGameOver: boolean) => {
@@ -112,7 +110,6 @@ export const checkChangeDirection = (currentDirection: DIRECTION, newDirection: 
     return change && !isGameOver;
 };
 export const drawSnakeFood = (ctx: any, foodObj: IFoodSnake): void => {
-    console.log('food at position: (' + foodObj.x + ',' + foodObj.y + ')');
     drawSquare(ctx, foodObj.x, foodObj.y, FOOD_COLOR);
 };
 export const isFoodEated = (foodObj: IFoodSnake, snake: ISnake) => {
@@ -133,7 +130,6 @@ export const moveSnake = (snake: ISnake, newX: number, newY: number) => {
         pos = pos - 1;
     }
     snake.body[0] = { x: newX, y: newY };
-    console.log(snake.body);
 };
 export const addBodyToSnake = (snake: ISnake, direction: DIRECTION) => {
     switch (direction) {
