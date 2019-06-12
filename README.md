@@ -15,17 +15,19 @@ You can move it with the directional keys of the keyboard.<br>
 
 **Second step tag v1.1**
 
-Introduce i18n.<br>
 Add routes.<br>
+Introduce Redux.<br>
 Add basics rules of the snake game.<br>
 
-**Third step**
+**Third step tag v1.2**
 
 Introduce Axios.<br>
-Introduce Redux.<br>
 Play with an nodejs server or spring-boot server with Jhisper or other.<br>
 
-**Last step**
+**Third step bis tag v1.3**
+Introduce i18n.<br>
+
+**Last step tag v2.0**
 
 Migration to a basic Html canvas 3d project.
 
