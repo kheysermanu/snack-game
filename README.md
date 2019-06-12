@@ -6,25 +6,33 @@ With integration of webpack for production build and hot loading during modifyin
 
 The purpose of this project is to look about these web technologies and try to manipulate them in application of the best practices
 
-**First step tag v1.0**
+**First step - tag v1.0**
 
 Init project with React, TSX, material-ui/(core,icons,styles) and wepack. <br>
 For now a simple green square is the snake.<br>
 The snake move in the canvas pane with black border witch change to red if the square touch the border.<br>
 You can move it with the directional keys of the keyboard.<br>
 
-**Second step tag v1.1**
+**Second step tag v1.1.1**
 
-Add routes.<br>
+Add basic routes.<br>
 Introduce Redux.<br>
 Add basics rules of the snake game.<br>
 
-**Third step tag v1.2**
+**Second step bis - tag v1.1.2**
+
+Add a basic graphical representation of stats, type Histogram based on Html Canvas
+
+**Second step ter - tag v1.1.3**
+
+Add interaction with the graphical representation
+
+**Third step - tag v1.2.1**
 
 Introduce Axios.<br>
 Play with an nodejs server or spring-boot server with Jhisper or other.<br>
 
-**Third step bis tag v1.3**
+**Third step bis tag v1.2.2**
 
 Introduce i18n.<br>
 
