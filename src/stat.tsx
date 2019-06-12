@@ -39,6 +39,6 @@ const mapStateToProps = (store: any) => ({
     stat: store.statReducer.game
 });
 export default compose(
-    connect(mapStateToProps, null),
-    withStyles(styles))
+    withStyles(styles),
+    connect(mapStateToProps, null))
     (StatComponent);

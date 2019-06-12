@@ -7,6 +7,9 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducersApp from 'reducers';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { StatComponent } from 'stat';
+import * as Constants from './constants';
 
 const theme = createMuiTheme(
     {
@@ -25,14 +28,14 @@ const theme = createMuiTheme(
 );
 
 const store = createStore(reducersApp);
-
-ReactDOM.render(
-    (
-        <Provider store={store}>
-            <ThemeProvider theme={theme}>
+const routing = (
+    <Provider store={store}>
+        <ThemeProvider theme={theme}>
+            <Router>
                 <AppComponent framework='React - HTML Canvas' />
-            </ThemeProvider>
-        </Provider>
-    ),
-    document.getElementById('root')
+                <Route path={Constants.STATS_URL} component={StatComponent} />
+            </Router>
+        </ThemeProvider>
+    </Provider>
 );
+ReactDOM.render(routing, document.getElementById('root'));

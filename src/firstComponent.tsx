@@ -15,7 +15,6 @@ const KeyboardEventHandler = require('react-keyboard-event-handler/lib/react-key
 
 interface ISnakePropsPane {
         classes?: any;
-        stat?: Game;
         saveStat?: Function;
 }
 
@@ -50,6 +49,9 @@ export class FirstComponent extends React.Component<ISnakePropsPane> {
         myCanvas: any;
         intervalID: any = null;
         progressBinded: any;
+        constructor(props: ISnakePropsPane) {
+                super(props);
+        }
         componentDidMount() {
                 this.startGame();
         }
@@ -163,14 +165,11 @@ export class FirstComponent extends React.Component<ISnakePropsPane> {
                 );
         }
 }
-
-const mapStateToProps = (store: any) => ({
-        stat: store.statReducer.game
-});
 const mapDispatchToProps = {
         saveStat
 };
-export default compose(
-        connect(mapStateToProps, mapDispatchToProps),
-        withStyles(styles))
-        (FirstComponent);
+const callCompose = compose(
+        withStyles(styles),
+        connect(null, mapDispatchToProps)
+);
+export default callCompose(FirstComponent);
