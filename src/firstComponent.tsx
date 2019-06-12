@@ -7,10 +7,16 @@ import Star from '@material-ui/icons/Star';
 import { withStyles, createStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 import { Theme } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import Game from 'model/game';
+import { saveStat } from 'actions/stat.action';
 const KeyboardEventHandler = require('react-keyboard-event-handler/lib/react-keyboard-event-handler');
 
-interface ISnackPropsPane {
+interface ISnakePropsPane {
         classes?: any;
+        stat?: Game;
+        saveStat?: Function;
 }
 
 const styles = (theme: Theme) => createStyles({
@@ -39,7 +45,7 @@ const styles = (theme: Theme) => createStyles({
                 flexDirection: 'row-reverse'
         }
 });
-export class FirstComponent extends React.Component<ISnackPropsPane> {
+export class FirstComponent extends React.Component<ISnakePropsPane> {
         state = Canvas.ORI_STATE();
         myCanvas: any;
         intervalID: any = null;
@@ -158,4 +164,13 @@ export class FirstComponent extends React.Component<ISnackPropsPane> {
         }
 }
 
-export default withStyles(styles)(FirstComponent);
+const mapStateToProps = (store: any) => ({
+        stat: store.statReducer.game
+});
+const mapDispatchToProps = {
+        saveStat
+};
+export default compose(
+        connect(mapStateToProps, mapDispatchToProps),
+        withStyles(styles))
+        (FirstComponent);
