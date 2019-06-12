@@ -25,6 +25,7 @@ Introduce Axios.<br>
 Play with an nodejs server or spring-boot server with Jhisper or other.<br>
 
 **Third step bis tag v1.3**
+
 Introduce i18n.<br>
 
 **Last step tag v2.0**
