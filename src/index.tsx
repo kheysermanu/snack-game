@@ -4,6 +4,9 @@ import AppComponent from './app';
 import 'typeface-roboto';
 import { ThemeProvider } from '@material-ui/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducersApp from 'reducers';
 
 const theme = createMuiTheme(
     {
@@ -21,11 +24,15 @@ const theme = createMuiTheme(
     }
 );
 
+const store = createStore(reducersApp);
+
 ReactDOM.render(
     (
-        <ThemeProvider theme={theme}>
-            <AppComponent framework='React - HTML Canvas' />
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <AppComponent framework='React - HTML Canvas' />
+            </ThemeProvider>
+        </Provider>
     ),
     document.getElementById('root')
 );
