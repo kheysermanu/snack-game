@@ -12,7 +12,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "tslint --project tsconfig.json -e 'node_modules/**'",
-    "watch": "webpack -p && webpack-dev-server -d --hot --config webpack.config.js --watch"
+    "watch": "npm run webpack-dev-server --config webpack.config.js --progress --inline --profile",
+    "webpack-dev-server": "node --max_old_space_size=10096 node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,6 +46,7 @@
     "babel-plugin-transform-react-pure-class-to-function": "1.0.1",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "clean-webpack-plugin": "3.0.0",
+    "css-hot-loader": "^1.4.4",
     "css-loader": "2.1.1",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "html-loader": "0.5.5",
@@ -74,13 +76,16 @@
     "@types/react": "16.8.18",
     "@types/react-dom": "16.8.4",
     "@types/react-redux": "^7.0.9",
+    "@types/react-router-dom": "^4.3.3",
     "immutable": "^4.0.0-rc.12",
     "lodash": "4.17.11",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",
-    "typeface-roboto": "0.0.54"
+    "typeface-roboto": "0.0.54",
+    "write-file-webpack-plugin": "^4.5.0"
   }
 }
