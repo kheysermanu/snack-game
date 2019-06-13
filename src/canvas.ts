@@ -1,3 +1,5 @@
+import Game from 'model/game';
+
 export const DIM_SQUARE = 20;
 export const DIM_STEP_FORWARD = 20;
 export const DIM_ROOT = 400;
@@ -24,7 +26,7 @@ export interface IGameState {
     direction: DIRECTION;
     play: boolean,
     food: IFoodSnake,
-    score: number
+    game: Game
 }
 export interface ICheckPosition {
     currentStep: boolean;
@@ -55,7 +57,7 @@ export const ORI_STATE = (): IGameState => ({
     direction: DIRECTION.RIGHT,
     play: true,
     food: genFoodSnake(),
-    score: 0
+    game: new Game()
 });
 export const clearPanel = (ctx: any) => {
     if (ctx) {

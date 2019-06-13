@@ -1,5 +1,4 @@
 import React, { SyntheticEvent, Component } from 'react';
-import {FirstComponent} from './firstComponent';
 import './app.scss';
 import { createStyles, withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
@@ -47,8 +46,10 @@ class AppComponent extends React.Component<IAppComponentProps> {
           <li>
             <Link to={Constants.STATS_URL}>Stats</Link>
           </li>
+          <li>
+            <Link to={Constants.GAME_URL}>Game</Link>
+          </li>
         </ul>
-        <FirstComponent />
       </div>
     );
   }

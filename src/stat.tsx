@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
 import Game from 'model/game';
-import { saveStat } from 'actions/stat.action';
 import { withStyles, createStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 import { Theme } from '@material-ui/core';
@@ -18,11 +16,14 @@ const styles = (theme: Theme) => createStyles(
             width: '100%',
             display: 'flex',
             alignItems: 'center',
-            color: theme.palette.primary.light
+            color: theme.palette.primary.dark
         }
     }
 );
-export class StatComponent extends React.Component<IStatProps>{
+class StatComponent extends React.Component<IStatProps> {
+    constructor(props: Readonly<IStatProps>) {
+        super(props);
+    }
     render() {
         const { classes } = this.props;
         return (
@@ -38,7 +39,4 @@ export class StatComponent extends React.Component<IStatProps>{
 const mapStateToProps = (store: any) => ({
     stat: store.statReducer.game
 });
-export default compose(
-    withStyles(styles),
-    connect(mapStateToProps, null))
-    (StatComponent);
+export default connect(mapStateToProps, null)(withStyles(styles)(StatComponent));
