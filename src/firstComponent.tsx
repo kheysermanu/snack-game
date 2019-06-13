@@ -8,48 +8,52 @@ import { withStyles, createStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 import { Theme } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
 import Game from 'model/game';
 import { saveStat } from 'actions/stat.action';
+import moment from 'moment';
 const KeyboardEventHandler = require('react-keyboard-event-handler/lib/react-keyboard-event-handler');
 
 interface ISnakePropsPane {
         classes?: any;
-        saveStat?: Function;
+        onSave: Function;
 }
 
-const styles = (theme: Theme) => createStyles({
-        divCanvas: {
-                flex: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyItems: 'center'
-        },
-        btn: {
-                flex: 'auto',
-                width: '100%'
-        },
-        canvas: {
-                border: 'solid 1px white'
-        },
-        loose: {
-                border: 'solid 2px red'
-        },
-        typo: {
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                color: theme.palette.primary.light,
-                flexDirection: 'row-reverse'
-        }
-});
-export class FirstComponent extends React.Component<ISnakePropsPane> {
+const styles = (theme: Theme) => createStyles(
+        {
+                divCanvas: {
+                        width: '100%',
+                        height: '100%',
+                        flex: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyItems: 'center',
+                        backgroundColor: theme.palette.common.black
+                },
+                btn: {
+                        flex: 'auto',
+                        width: '100%'
+                },
+                canvas: {
+                        border: 'solid 1px white'
+                },
+                loose: {
+                        border: 'solid 2px red'
+                },
+                typo: {
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: theme.palette.primary.light,
+                        flexDirection: 'row-reverse'
+                }
+        });
+class FirstComponent extends React.Component<ISnakePropsPane> {
         state = Canvas.ORI_STATE();
         myCanvas: any;
         intervalID: any = null;
         progressBinded: any;
-        constructor(props: ISnakePropsPane) {
+        constructor(props: Readonly<ISnakePropsPane>) {
                 super(props);
         }
         componentDidMount() {
@@ -61,7 +65,6 @@ export class FirstComponent extends React.Component<ISnakePropsPane> {
                         this.showFood();
                 }
         }
-
         componentWillUnmount() {
                 if (this.intervalID) {
                         clearTimeout(this.intervalID);
@@ -88,8 +91,12 @@ export class FirstComponent extends React.Component<ISnakePropsPane> {
                         const isFoodEated = Canvas.isFoodEated(this.state.food, this.state.snake);
                         const food: Canvas.IFoodSnake = isFoodEated ? Canvas.genFoodSnake() : this.state.food;
                         const snake: Canvas.ISnake = this.state.snake;
-                        const score = isFoodEated ?
-                                this.state.score + 1 : this.state.score;
+                        const game: Game = this.state.game;
+                        game.score = isFoodEated ?
+                                game.score + 1 : game.score;
+                        if (!check.nextStep) {
+                                game.endGame = moment().format();
+                        }
                         Canvas.moveSnake(snake, x, y);
                         if (isFoodEated) {
                                 Canvas.addBodyToSnake(snake, this.state.direction);
@@ -97,7 +104,7 @@ export class FirstComponent extends React.Component<ISnakePropsPane> {
                         this.setState({
                                 snake: snake,
                                 play: check.nextStep,
-                                score: score,
+                                game: game,
                                 food: food
                         });
                 }
@@ -111,6 +118,7 @@ export class FirstComponent extends React.Component<ISnakePropsPane> {
                 }
                 if (!this.state.play) {
                         this.looseGame();
+                        this.props.onSave(this.state.game);
                 }
         }
 
@@ -149,7 +157,7 @@ export class FirstComponent extends React.Component<ISnakePropsPane> {
                                         onKeyEvent={this.onKeyEvent}
                                 />
                                 <Typography className={classes.typo} component='h4' gutterBottom={true}>
-                                        <Star /> {this.state.score}
+                                        <Star /> {this.state.game.score}
                                 </Typography>
                                 <canvas
                                         className={this.state.play ? classes.canvas : classes.loose}
@@ -165,11 +173,6 @@ export class FirstComponent extends React.Component<ISnakePropsPane> {
                 );
         }
 }
-const mapDispatchToProps = {
-        saveStat
-};
-const callCompose = compose(
-        withStyles(styles),
-        connect(null, mapDispatchToProps)
-);
-export default callCompose(FirstComponent);
+const mapDispatchToProps = { onSave: saveStat };
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(FirstComponent));

@@ -15,6 +15,7 @@ const initialState = {
 const statReducer = (state = initialState, action: AnyAction) => {
     switch (action.type) {
         case ACTIONS.SAVE_STAT:
+            console.log('save :' + action.meta.game);
             return {
                 ...state,
                 game: state.game.push(action.meta.game)

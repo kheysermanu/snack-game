@@ -1,11 +1,10 @@
 const webpack = require("webpack");
 const path = require("path");
+const writeFilePlugin = require('write-file-webpack-plugin');
 const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin");
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const writeFilePlugin = require('write-file-webpack-plugin');
 const settings = {
   distPath: path.join(__dirname, "dist"),
   srcPath: path.join(__dirname, "src"),
@@ -18,11 +17,18 @@ function srcPathExtend(subpath) {
 };
 
 const config = {
-  entry: './src/index.tsx',
+  entry: {
+    client: ['./src/index.tsx'],
+    vendor: ['react', 'react-dom', 'react-router-dom']
+  },
   output: {
     path: settings.distPath,
-    filename: '[name].[hash].bundle.js',
-    chunkFilename: '[id].[hash].chunk.js',
+    filename: 'bundle.js'
+  },
+  optimization: {
+    concatenateModules: false,
+    providedExports: false,
+    usedExports: false
   },
   resolve: {
     /*alias: {
@@ -51,13 +57,13 @@ const config = {
     {
       test: /\.scss$/,
       exclude: /node_modules/,
-      use: ['css-hot-loader'].concat(ExtractTextWebpackPlugin.extract({
+      use: ExtractTextWebpackPlugin.extract({
         fallback: 'style-loader',// creates style nodes from JS strings
         use: [
           'css-loader',// translates CSS into CommonJS
           'sass-loader',// compiles Sass to CSS, using Node Sass by default
         ],
-      }))
+      })
     },
     // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
     {
@@ -108,11 +114,12 @@ const config = {
     })
   ],
   devServer: {
-    contentBase: settings.distPath,
+    contentBase: settings.srcPath,
     historyApiFallback: true,
     compress: true,
     inline: true,
     open: true,
+    openPage: 'accueil',
     hot: true,
     watchOptions: {
       ignored: /node_modules/
@@ -121,6 +128,7 @@ const config = {
       children: false
     }
   },
+  mode: 'development',
   devtool: "eval-source-map"
 };
 
