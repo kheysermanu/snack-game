@@ -5,10 +5,10 @@ import 'typeface-roboto';
 import { ThemeProvider } from '@material-ui/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware  } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import reducersApp from 'reducers/index';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-import StatComponent  from './stat';
+import StatComponent from './stat';
 import * as Constants from './constants';
 import FirstComponent from './firstComponent';
 import thunk from 'redux-thunk';
@@ -29,7 +29,7 @@ const theme = createMuiTheme(
     }
 );
 
-const store = createStore(reducersApp,applyMiddleware(thunk));
+const store = createStore(reducersApp, applyMiddleware(thunk));
 const getRootComponent = () => (<AppComponent framework='React - HTML Canvas' />);
 const routing = (
     <Provider store={store}>
