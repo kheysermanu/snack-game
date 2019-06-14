@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Replay from '@material-ui/icons/Replay';
 import Star from '@material-ui/icons/Star';
 import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
+import Home from '@material-ui/icons/Home';
 import { withStyles, createStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 import { Theme } from '@material-ui/core';
@@ -12,11 +13,12 @@ import { connect } from 'react-redux';
 import Game from 'model/game';
 import { saveStat } from 'actions/stat.action';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import * as Constants from './constants';
+import { withRouter } from 'react-router-dom';
 const KeyboardEventHandler = require('react-keyboard-event-handler/lib/react-keyboard-event-handler');
 
-interface ISnakePropsPane {
+interface ISnakePropsPane extends RouteComponentProps {
         classes?: any;
         onSave: Function;
 }
@@ -38,7 +40,8 @@ const styles = (theme: Theme) => createStyles(
                         flex: '1 1 auto'
                 },
                 canvas: {
-                        border: 'solid 1px white'
+                        border: 'solid 1px white',
+                        marginBottom: '1rem'
                 },
                 loose: {
                         border: 'solid 2px red'
@@ -49,14 +52,16 @@ const styles = (theme: Theme) => createStyles(
                         alignItems: 'center',
                         color: theme.palette.primary.light,
                         justifyContent: 'center',
-                        height: '3rem',
                         flexDirection: 'column',
                         flex: '1 1 auto'
                 },
                 label: {
                         display: 'flex',
                         alignItems: 'center'
-                }
+                },
+                button: {
+                        margin: theme.spacing.unit,
+                },
         });
 class FirstComponent extends React.Component<ISnakePropsPane> {
         state = Canvas.ORI_STATE();
@@ -158,6 +163,10 @@ class FirstComponent extends React.Component<ISnakePropsPane> {
                 );
         }
 
+        onClick = (event: React.MouseEvent<HTMLElement>): any => {
+                this.props.history.push(event.currentTarget.id);
+        }
+
         render() {
                 const { classes } = this.props;
                 return (
@@ -168,8 +177,25 @@ class FirstComponent extends React.Component<ISnakePropsPane> {
                                 />
                                 <Typography className={classes.typo} component='h4' gutterBottom={true}>
                                         <div className={classes.label}><Star /> {this.state.game.score}</div>
-                                        <Link to={Constants.STATS_URL} className={classes.label}><ArrowRightAlt /> Stats</Link>
                                 </Typography>
+                                <div>
+                                        <Button
+                                                id={Constants.ROOT_URL}
+                                                variant='contained'
+                                                onClick={this.onClick}
+                                                className={classes.button}
+                                        >
+                                                <Home /> Accueil
+                                        </Button>
+                                        <Button
+                                                id={Constants.STATS_URL}
+                                                variant='contained'
+                                                onClick={this.onClick}
+                                                className={classes.button}
+                                        >
+                                                <ArrowRightAlt /> Stats
+                                        </Button>
+                                </div>
                                 <canvas
                                         className={this.state.play ? classes.canvas : classes.loose}
                                         id='canvasid'
@@ -186,4 +212,4 @@ class FirstComponent extends React.Component<ISnakePropsPane> {
 }
 const mapDispatchToProps = { onSave: saveStat };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(FirstComponent));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(withRouter(FirstComponent)));

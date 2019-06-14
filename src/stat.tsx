@@ -6,16 +6,23 @@ import { Typography, Paper, Table, TableHead, TableRow, TableBody, TableCell } f
 import { Theme } from '@material-ui/core';
 import { List } from 'immutable';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import * as Constants from './constants';
 import Replay from '@material-ui/icons/Replay';
+import Home from '@material-ui/icons/Home';
+import Button from '@material-ui/core/Button';
+import { withRouter } from 'react-router-dom';
 
-interface IStatProps {
+interface IStatProps extends RouteComponentProps {
     classes?: any;
     stat: List<Game>;
 }
 const styles = (theme: Theme) => createStyles(
     {
+        root: {
+            display: 'flex',
+            flexDirection: 'column'
+        },
         typo: {
             width: '100%',
             display: 'flex',
@@ -23,7 +30,8 @@ const styles = (theme: Theme) => createStyles(
             color: theme.palette.primary.dark,
             height: '3rem',
             justifyContent: 'center',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            flex: '1'
         },
         paper: {
             width: '100%',
@@ -32,6 +40,9 @@ const styles = (theme: Theme) => createStyles(
         },
         table: {
             minWidth: 650,
+        },
+        button: {
+            margin: theme.spacing.unit,
         },
     }
 );
@@ -62,14 +73,34 @@ class StatComponent extends React.Component<IStatProps> {
             </>
         );
     }
+    onClick = (event: React.MouseEvent<HTMLElement>): any => {
+        this.props.history.push(event.currentTarget.id);
+    }
     render() {
         const { classes } = this.props;
         return (
-            <div>
+            <div className={classes.root}>
                 <Typography className={classes.typo} component='h2' gutterBottom={true}>
                     Stat Game
-                    <Link to={Constants.GAME_URL}><Replay /> Replay</Link>
                 </Typography>
+                <div>
+                    <Button
+                        variant='contained'
+                        id={Constants.GAME_URL}
+                        className={classes.button}
+                        onClick={this.onClick}
+                    >
+                        <Replay /> Replay
+                    </Button>
+                    <Button
+                        variant='contained'
+                        id={Constants.ROOT_URL}
+                        className={classes.button}
+                        onClick={this.onClick}
+                    >
+                        <Home /> Accueil
+                    </Button>
+                </div>
                 <Paper className={classes.paper}>
                     <Table className={classes.table}>
                         <TableHead>
@@ -93,4 +124,4 @@ class StatComponent extends React.Component<IStatProps> {
 const mapStateToProps = (store: any) => ({
     stat: store.statReducer.game
 });
-export default connect(mapStateToProps, null)(withStyles(styles)(StatComponent));
+export default connect(mapStateToProps, null)(withStyles(styles)(withRouter(StatComponent)));
