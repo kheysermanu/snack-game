@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
+const writeFilePlugin = require('write-file-webpack-plugin');
 const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin");
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -16,10 +17,18 @@ function srcPathExtend(subpath) {
 };
 
 const config = {
-  entry: './src/index.tsx',
+  entry: {
+    client: ['./src/index.tsx'],
+    vendor: ['react', 'react-dom', 'react-router-dom']
+  },
   output: {
     path: settings.distPath,
-    filename: "bundle.js"
+    filename: 'bundle.js'
+  },
+  optimization: {
+    concatenateModules: false,
+    providedExports: false,
+    usedExports: false
   },
   resolve: {
     /*alias: {
@@ -89,6 +98,10 @@ const config = {
      "react-dom": "react-dom"
   },*/
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new writeFilePlugin(),
     new CleanWebpackPlugin(),
     new ExtractTextWebpackPlugin("styles.css"),
     new webpack.ProvidePlugin({
@@ -106,8 +119,16 @@ const config = {
     compress: true,
     inline: true,
     open: true,
-    hot: true
+    openPage: 'accueil',
+    hot: true,
+    watchOptions: {
+      ignored: /node_modules/
+    },
+    stats: {
+      children: false
+    }
   },
+  mode: 'development',
   devtool: "eval-source-map"
 };
 
