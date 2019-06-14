@@ -4,6 +4,7 @@ import * as Tools from 'lodash';
 import Button from '@material-ui/core/Button';
 import Replay from '@material-ui/icons/Replay';
 import Star from '@material-ui/icons/Star';
+import ArrowRightAlt from '@material-ui/icons/ArrowRightAlt';
 import { withStyles, createStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 import { Theme } from '@material-ui/core';
@@ -11,6 +12,8 @@ import { connect } from 'react-redux';
 import Game from 'model/game';
 import { saveStat } from 'actions/stat.action';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import * as Constants from './constants';
 const KeyboardEventHandler = require('react-keyboard-event-handler/lib/react-keyboard-event-handler');
 
 interface ISnakePropsPane {
@@ -27,12 +30,12 @@ const styles = (theme: Theme) => createStyles(
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        justifyItems: 'center',
+                        justifyContent: 'center',
                         backgroundColor: theme.palette.common.black
                 },
                 btn: {
-                        flex: 'auto',
-                        width: '100%'
+                        width: '100%',
+                        flex: '1 1 auto'
                 },
                 canvas: {
                         border: 'solid 1px white'
@@ -45,7 +48,14 @@ const styles = (theme: Theme) => createStyles(
                         display: 'flex',
                         alignItems: 'center',
                         color: theme.palette.primary.light,
-                        flexDirection: 'row-reverse'
+                        justifyContent: 'center',
+                        height: '3rem',
+                        flexDirection: 'column',
+                        flex: '1 1 auto'
+                },
+                label: {
+                        display: 'flex',
+                        alignItems: 'center'
                 }
         });
 class FirstComponent extends React.Component<ISnakePropsPane> {
@@ -157,7 +167,8 @@ class FirstComponent extends React.Component<ISnakePropsPane> {
                                         onKeyEvent={this.onKeyEvent}
                                 />
                                 <Typography className={classes.typo} component='h4' gutterBottom={true}>
-                                        <Star /> {this.state.game.score}
+                                        <div className={classes.label}><Star /> {this.state.game.score}</div>
+                                        <Link to={Constants.STATS_URL} className={classes.label}><ArrowRightAlt /> Stats</Link>
                                 </Typography>
                                 <canvas
                                         className={this.state.play ? classes.canvas : classes.loose}
