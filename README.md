@@ -21,8 +21,8 @@ Add basics rules of the snake game.<br>
 
 **Second step bis - tag v1.1.2**
 
-Add a navbar
-Add a basic graphical representation of stats, type Histogram based on Html Canvas
+Add a navbar.<br>
+Add a basic graphical representation of stats, type Histogram based on Html Canvas.
 
 **Second step ter - tag v1.1.3**
 
