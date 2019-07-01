@@ -12,6 +12,7 @@ import Replay from '@material-ui/icons/Replay';
 import Home from '@material-ui/icons/Home';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
+import GraphComponent  from 'graph';
 
 interface IStatProps extends RouteComponentProps {
     classes?: any;
@@ -21,7 +22,8 @@ const styles = (theme: Theme) => createStyles(
     {
         root: {
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            height: '100%'
         },
         typo: {
             width: '100%',
@@ -35,7 +37,6 @@ const styles = (theme: Theme) => createStyles(
         },
         paper: {
             width: '100%',
-            marginTop: theme.spacing.unit * 3,
             overflowX: 'auto',
         },
         table: {
@@ -76,6 +77,53 @@ class StatComponent extends React.Component<IStatProps> {
     onClick = (event: React.MouseEvent<HTMLElement>): any => {
         this.props.history.push(event.currentTarget.id);
     }
+    getTableContent = (classes: any) => {
+        return (
+            <Paper className={classes.paper}>
+                <Table className={classes.table}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Date de début</TableCell>
+                            <TableCell align='right'>Date de fin</TableCell>
+                            <TableCell align='right'>Temps(s)</TableCell>
+                            <TableCell align='right'>Score</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {this.getTableBody()}
+                    </TableBody>
+                </Table>
+            </Paper>
+        );
+    }
+
+    getHeaderButtons = (classes: any) => {
+        return (
+            <div>
+                <Button
+                    variant='contained'
+                    id={Constants.GAME_URL}
+                    className={classes.button}
+                    onClick={this.onClick}
+                >
+                    <Replay /> Replay
+                </Button>
+                <Button
+                    variant='contained'
+                    id={Constants.ROOT_URL}
+                    className={classes.button}
+                    onClick={this.onClick}
+                >
+                    <Home /> Accueil
+                </Button>
+            </div>
+        );
+    }
+    getGraphHisto = () => {
+        return (
+            <GraphComponent />
+        );
+    }
     render() {
         const { classes } = this.props;
         return (
@@ -83,39 +131,9 @@ class StatComponent extends React.Component<IStatProps> {
                 <Typography className={classes.typo} component='h2' gutterBottom={true}>
                     Stat Game
                 </Typography>
-                <div>
-                    <Button
-                        variant='contained'
-                        id={Constants.GAME_URL}
-                        className={classes.button}
-                        onClick={this.onClick}
-                    >
-                        <Replay /> Replay
-                    </Button>
-                    <Button
-                        variant='contained'
-                        id={Constants.ROOT_URL}
-                        className={classes.button}
-                        onClick={this.onClick}
-                    >
-                        <Home /> Accueil
-                    </Button>
-                </div>
-                <Paper className={classes.paper}>
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Date de début</TableCell>
-                                <TableCell align='right'>Date de fin</TableCell>
-                                <TableCell align='right'>Temps(s)</TableCell>
-                                <TableCell align='right'>Score</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {this.getTableBody()}
-                        </TableBody>
-                    </Table>
-                </Paper>
+                {this.getHeaderButtons(classes)}
+                {this.getTableContent(classes)}
+                {this.getGraphHisto()}
             </div>
         );
     }
