@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles, createStyles } from '@material-ui/styles';
 import { Theme, WithStyles } from '@material-ui/core';
+import { drawGraph } from 'actions/graph';
 
 export interface IGraphProps {
     data?: [];
@@ -18,10 +19,12 @@ const styles = (theme: Theme) => createStyles(
 
 const DIV_ID = 'graphComponent';
 
+const ID_GRAPH = 'graph';
+
 class GraphComponent extends React.Component<IGraphProps> {
     state = {
-        width: undefined,
-        height: undefined
+        width: 20,
+        height: 20
     }
     /**
        * Add event listener
@@ -38,6 +41,10 @@ class GraphComponent extends React.Component<IGraphProps> {
         window.removeEventListener('resize', this.updateDimensions);
     }
 
+    componentDidUpdate() {
+        drawGraph(ID_GRAPH, this.state.height, this.state.width);
+    }
+
     updateDimensions = () => {
         const divRoot: HTMLElement | null = document.getElementById(DIV_ID);
         if (divRoot) {
@@ -52,7 +59,7 @@ class GraphComponent extends React.Component<IGraphProps> {
         const { classes } = this.props;
         return (
             <div className={classes.root} id={DIV_ID}>
-                <canvas id='graph' height={this.state.height} width={this.state.width} >
+                <canvas id={ID_GRAPH} height={this.state.height} width={this.state.width} >
                     <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
                 </canvas >
             </div>
